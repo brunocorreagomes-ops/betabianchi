@@ -80,6 +80,12 @@
 
         .dud { @apply text-teal/40; }
         .stat-card { @apply bg-ink2/70 backdrop-blur-xl border border-teal/10 p-7 rounded-2xl transition-all duration-300 hover:border-teal/30 hover:-translate-x-1 shadow-2xl; }
+        #hero-image {
+            mask-image: linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to right, black 70%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%), linear-gradient(to right, transparent 0%, black 30%);
+            opacity: 0.85;
+            filter: brightness(0.9) contrast(1.1);
+        }
     </style>
 </head>
 <body>
@@ -126,9 +132,17 @@
                     <span class="font-serif italic font-light text-teal text-6xl md:text-[7.5rem] block -mt-4" id="scramble2">mente.</span>
                 </h1>
 
-                <p id="hero-desc" class="text-cream/70 text-base md:text-lg max-w-lg mb-10 leading-relaxed mx-auto lg:mx-0">
+                <p id="hero-desc" class="text-cream/70 text-base md:text-lg max-w-lg mb-4 leading-relaxed mx-auto lg:mx-0">
                     A psicologia que entende seu cérebro e acolhe sua história. Transforme sua saúde mental com ciência e empatia real.
                 </p>
+
+                <!-- Hero Share Buttons -->
+                <div class="flex items-center justify-center lg:justify-start gap-4 mb-10 opacity-40 hover:opacity-100 transition-opacity">
+                    <span class="text-[9px] uppercase tracking-widest font-bold">Compartilhar:</span>
+                    <button onclick="share('whatsapp')" class="hover:text-teal transition-colors" title="Compartilhar no WhatsApp"><i data-lucide="message-circle" class="w-4 h-4"></i></button>
+                    <button onclick="share('linkedin')" class="hover:text-teal transition-colors" title="Compartilhar no LinkedIn"><i data-lucide="linkedin" class="w-4 h-4"></i></button>
+                    <button onclick="share('twitter')" class="hover:text-teal transition-colors" title="Compartilhar no Twitter"><i data-lucide="twitter" class="w-4 h-4"></i></button>
+                </div>
 
                 <div id="hero-actions" class="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
                     <a href="https://wa.me/11982921669" class="btn-magnetic magnetic">
@@ -228,6 +242,16 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Sobre Share -->
+                    <div class="mt-12 pt-8 border-t border-teal/5 flex items-center gap-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-teal/40">Gostou da abordagem? Compartilhe:</span>
+                        <div class="flex gap-4">
+                            <button onclick="share('whatsapp')" class="w-10 h-10 rounded-full bg-teal/5 flex items-center justify-center hover:bg-teal hover:text-ink transition-all"><i data-lucide="message-circle" class="w-4 h-4"></i></button>
+                            <button onclick="share('linkedin')" class="w-10 h-10 rounded-full bg-teal/5 flex items-center justify-center hover:bg-teal hover:text-ink transition-all"><i data-lucide="linkedin" class="w-4 h-4"></i></button>
+                            <button onclick="share('twitter')" class="w-10 h-10 rounded-full bg-teal/5 flex items-center justify-center hover:bg-teal hover:text-ink transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -325,11 +349,11 @@
             <div class="flex items-center gap-4">
                 <span class="text-teal">Beta Bianchi</span>
                 <span class="w-[1px] h-3 bg-teal/20"></span>
-                <span>Roberta Bianchi Cortez Zanollo · CRP 06/175.465</span>
+                <span>@ Todos os direitos reservados · Roberta Bianchi Cortez Zanollo · CRP 06/175.465</span>
             </div>
-            <div class="flex gap-8 items-center">
+            <div class="flex flex-col md:flex-row gap-8 items-center">
                 <a href="https://instagram.com/beta_bianchi.neuropsi" class="hover:text-teal transition-colors">Instagram</a>
-                <a href="#" class="hover:text-teal transition-colors">Portfólio Visual</a>
+                <span>Desenvolvido por <a href="http://www.orvalia.com.br" class="text-teal hover:underline" target="_blank" rel="noopener noreferrer">Orvalia Studio</a></span>
             </div>
         </div>
     </footer>
@@ -491,26 +515,44 @@
             
             // Hero Image Slide In
             gsap.to("#hero-image", { 
-                opacity: 1, 
+                opacity: 0.85, 
                 x: "-15%", 
                 duration: 1.5, 
                 delay: 0.3,
                 ease: "power3.out",
-                startAt: { x: "-25%" }
+                startAt: { x: "-25%", opacity: 0 }
             });
 
             // Content Animations
             gsap.to("#hero-eyebrow", { opacity: 1, y: 0, duration: 1, delay: 0.5, startAt: { y: 20 } });
             
-            // Fix: Ensure the parent title container is visible for the scramble to show
-            gsap.to("#hero-title", { opacity: 1, duration: 0.1, delay: 0.6 });
-            
-            setTimeout(() => s1.setText('PRATICA'), 800);
-            setTimeout(() => s2.setText('mente.'), 1200);
-            gsap.to(["#scramble1", "#scramble2"], { opacity: 1, duration: 0.5, delay: 0.8 });
+            // Fix: Ensure the parent title container is visible
+            gsap.set("#hero-title", { opacity: 1 });
 
-            gsap.to("#hero-desc", { opacity: 1, y: 0, duration: 1, delay: 1.4, startAt: { y: 20 } });
-            gsap.to("#hero-actions", { opacity: 1, y: 0, duration: 1, delay: 1.6, startAt: { y: 20 } });
+            // Dynamic entrance for PRATICA
+            gsap.from("#scramble1", {
+                y: 100,
+                skewY: 7,
+                opacity: 0,
+                duration: 1.5,
+                delay: 0.7,
+                ease: "power4.out"
+            });
+            setTimeout(() => s1.setText('PRATICA'), 900);
+
+            // Staggered dynamic entrance for mente.
+            gsap.from("#scramble2", {
+                y: 60,
+                skewY: 5,
+                opacity: 0,
+                duration: 1.5,
+                delay: 1.1,
+                ease: "power4.out"
+            });
+            setTimeout(() => s2.setText('mente.'), 1400);
+
+            gsap.to("#hero-desc", { opacity: 1, y: 0, duration: 1, delay: 1.8, startAt: { y: 20, opacity: 0 } });
+            gsap.to("#hero-actions", { opacity: 1, y: 0, duration: 1, delay: 2.0, startAt: { y: 20, opacity: 0 } });
             
             // Cards stagger
             gsap.to("#hero-cards .stat-card", { 
@@ -518,10 +560,24 @@
                 x: 0, 
                 duration: 1, 
                 stagger: 0.2, 
-                delay: 1.8,
+                delay: 2.2,
                 startAt: { x: 30, opacity: 0 } 
             });
         });
+
+        // Sharing Logic
+        function share(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("Conheça o trabalho da Beta Bianchi, Psicóloga & Neuropsicóloga. Ciência para a vida real.");
+            
+            let shareUrl = "";
+            switch(platform) {
+                case 'whatsapp': shareUrl = `https://api.whatsapp.com/send?text=${text}%20${url}`; break;
+                case 'linkedin': shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`; break;
+                case 'twitter':  shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`; break;
+            }
+            if(shareUrl) window.open(shareUrl, '_blank');
+        }
 
         // Simple Intersection Logic
         const observer = new IntersectionObserver(entries => {
