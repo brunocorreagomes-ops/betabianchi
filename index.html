@@ -190,9 +190,9 @@
     </div>
 
     <!-- SOBRE -->
-    <section id="sobre" class="py-32 px-[8vw] bg-ink">
+    <section id="sobre" class="py-32 px-[8vw] bg-ink reveal-section">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
-            <div class="lg:w-1/2 relative group">
+            <div class="lg:w-1/2 relative group reveal-item">
                 <div class="relative bg-ink2 p-12 rounded-[2rem] border border-teal/10 shadow-3xl z-10 transition-transform duration-500 group-hover:-translate-y-2">
                     <span class="font-serif italic text-8xl text-teal/10 absolute -top-4 -left-4">"</span>
                     <p class="font-serif italic text-3xl text-cream leading-snug relative z-10 mb-8">
@@ -204,7 +204,7 @@
                 <div class="absolute -bottom-8 -right-8 w-full h-full bg-teal/5 rounded-[2.5rem] -z-1 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
             </div>
             
-            <div class="lg:w-1/2">
+            <div class="lg:w-1/2 reveal-item">
                 <div class="flex items-center gap-4 mb-4">
                     <div class="w-8 h-[1px] bg-teal"></div>
                     <span class="text-teal text-[11px] uppercase tracking-[0.3em] font-bold">Por que eu?</span>
@@ -242,25 +242,25 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-2">
+                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(0,229,212,0.15)]">
                     <div class="mb-12">
-                        <i data-lucide="brain" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
+                        <i data-lucide="brain" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6"></i>
                     </div>
                     <h3 class="text-2xl mb-6">Neuropsicologia</h3>
                     <p class="text-cream/30 text-sm leading-relaxed">Avaliações cognitivas detalhadas para o diagnóstico preciso de TDAH, Autismo e declínios cognitivos.</p>
                 </div>
 
-                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-2">
+                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(0,229,212,0.15)]">
                     <div class="mb-12">
-                        <i data-lucide="users" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
+                        <i data-lucide="users" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6"></i>
                     </div>
                     <h3 class="text-2xl mb-6">Psicoterapia</h3>
                     <p class="text-cream/30 text-sm leading-relaxed">Ansiedade, depressão e regulação emocional para adultos, adolescentes e terapia de casal.</p>
                 </div>
 
-                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-2">
+                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(0,229,212,0.15)]">
                     <div class="mb-12">
-                        <i data-lucide="baby" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
+                        <i data-lucide="baby" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6"></i>
                     </div>
                     <h3 class="text-2xl mb-6">Perinatal</h3>
                     <p class="text-cream/30 text-sm leading-relaxed">Acompanhamento especializado para gestantes e puérperas durante a jornada da maternidade.</p>
@@ -270,10 +270,10 @@
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="py-32 px-[8vw] bg-ink">
+    <section id="faq" class="py-32 px-[8vw] bg-ink reveal-section">
         <div class="max-w-3xl mx-auto">
-            <h2 class="text-4xl text-center mb-16">Dúvida <span class="italic font-serif text-teal font-light">Frequentes</span></h2>
-            <div class="space-y-4">
+            <h2 class="text-4xl text-center mb-16 reveal-item">Dúvida <span class="italic font-serif text-teal font-light">Frequentes</span></h2>
+            <div class="space-y-4 reveal-item">
                 <details class="group bg-ink2 border border-teal/5 rounded-2xl p-6 open:border-teal/20 transition-all">
                     <summary class="list-none flex justify-between items-center cursor-pointer font-bold text-xs uppercase tracking-widest text-teal/60">
                         Como funciona a primeira sessão?
@@ -502,6 +502,9 @@
             // Content Animations
             gsap.to("#hero-eyebrow", { opacity: 1, y: 0, duration: 1, delay: 0.5, startAt: { y: 20 } });
             
+            // Fix: Ensure the parent title container is visible for the scramble to show
+            gsap.to("#hero-title", { opacity: 1, duration: 0.1, delay: 0.6 });
+            
             setTimeout(() => s1.setText('PRATICA'), 800);
             setTimeout(() => s2.setText('mente.'), 1200);
             gsap.to(["#scramble1", "#scramble2"], { opacity: 1, duration: 0.5, delay: 0.8 });
@@ -527,8 +530,8 @@
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.act-card, .stat-card').forEach(el => {
-            el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
+        document.querySelectorAll('.act-card, .stat-card, .reveal-item').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-12', 'transition-all', 'duration-1000', 'ease-out');
             observer.observe(el);
         });
     </script>
