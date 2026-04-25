@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beta Bianchi · Psicologia & Neuropsicologia</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="Psicologia e Neuropsicologia com abordagem humana e científica. Atendimento online e presencial.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,700;12..96,800&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&family=Familjen+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: '#07090d',
+                        ink2: '#111620',
+                        teal: '#00e5d4',
+                        teal2: '#00bfb0',
+                        cream: '#f5f0e8',
+                        sand: '#e2d9c8',
+                    },
+                    fontFamily: {
+                        display: ['Bricolage Grotesque', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                        body: ['Familjen Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply bg-ink text-cream font-body antialiased selection:bg-teal selection:text-ink cursor-none; }
+            h1, h2, h3 { @apply font-display font-black tracking-tight; }
+        }
+
+        .grain {
+            position: fixed; inset: 0; z-index: 9998;
+            pointer-events: none; opacity: 0.55;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
+            animation: grain-shift 0.2s steps(1) infinite;
+        }
+        @keyframes grain-shift {
+            0%,100% { transform: translate(0,0); }
+            10% { transform: translate(-2%,-3%); }
+            20% { transform: translate(3%,2%); }
+            50% { transform: translate(-3%,1%); }
+        }
+
+        .c-cursor { @apply fixed top-0 left-0 w-10 h-10 border border-teal/60 rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-[width,height,background] duration-300 mix-blend-difference; }
+        .c-dot { @apply fixed top-0 left-0 w-1 rounded-full bg-teal pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 h-1; }
+        
+        body:has(a:hover) .c-cursor, body:has(button:hover) .c-cursor { @apply w-16 h-16 bg-teal/10 border-teal; }
+
+        .btn-magnetic { @apply relative bg-teal text-ink font-black text-[13px] uppercase tracking-wider px-10 py-5 rounded-full flex items-center gap-3 transition-shadow duration-300 hover:shadow-[0_0_30px_rgba(0,229,212,0.4)]; }
+        
+        .scanline {
+            @apply absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-teal/10 to-transparent pointer-events-none z-10;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan { from { top: -1px; } to { top: 100%; } }
+
+        .marquee-track { animation: marquee-scroll 35s linear infinite; }
+        @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        .dud { @apply text-teal/40; }
+        .stat-card { @apply bg-ink2/70 backdrop-blur-xl border border-teal/10 p-7 rounded-2xl transition-all duration-300 hover:border-teal/30 hover:-translate-x-1 shadow-2xl; }
+    </style>
+</head>
+<body>
+    <div class="grain"></div>
+    <div class="c-cursor" id="cursor"></div>
+    <div class="c-dot" id="cursorDot"></div>
+
+    <!-- NAV -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-[500] flex items-center bg-ink/80 backdrop-blur-2xl border border-teal/10 rounded-full px-8 py-3 shadow-2xl min-w-[320px] md:min-w-[600px] justify-between">
+        <a href="#" class="font-serif italic text-lg text-cream mr-4">Beta Bianchi</a>
+        <ul class="hidden md:flex gap-8 items-center">
+            <li><a href="#sobre" class="text-[10px] uppercase tracking-[0.2em] text-cream/40 hover:text-teal transition-colors">Sobre</a></li>
+            <li><a href="#atuacao" class="text-[10px] uppercase tracking-[0.2em] text-cream/40 hover:text-teal transition-colors">Clínica</a></li>
+            <li><a href="#faq" class="text-[10px] uppercase tracking-[0.2em] text-cream/40 hover:text-teal transition-colors">Dúvidas</a></li>
+        </ul>
+        <a href="https://wa.me/11982921669" class="bg-teal text-ink px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform">Agendar</a>
+    </nav>
+
+    <!-- HERO -->
+    <header class="relative min-h-screen flex flex-col justify-center px-[6vw] overflow-hidden">
+        <canvas id="neural-canvas" class="absolute inset-0 z-0"></canvas>
+        <div class="scanline"></div>
+
+        <!-- Portrait Image -->
+        <div class="absolute bottom-0 left-0 h-[85vh] w-auto z-10 pointer-events-none hidden lg:block overflow-hidden">
+            <img id="hero-image" 
+                 src="https://i.ibb.co/JjLqLryx/beta-hero-page.webp" 
+                 alt="Beta Bianchi" 
+                 fetchpriority="high"
+                 decoding="async"
+                 loading="eager"
+                 class="h-full w-auto object-contain object-bottom translate-x-[-15%] origin-bottom">
+        </div>
+
+        <div class="relative z-20 flex flex-col lg:flex-row items-center justify-between gap-12 lg:pl-[38vw] xl:pl-[42vw]">
+            <div class="max-w-xl text-center lg:text-left pt-20 lg:pt-0">
+                <div id="hero-eyebrow" class="flex items-center justify-center lg:justify-start gap-3 mb-6">
+                    <div class="w-2 h-2 rounded-full bg-teal animate-pulse"></div>
+                    <span class="text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-teal font-bold">PSICOLOGIA E NEUROPSICOLOGIA - CRP 06/175.465</span>
+                </div>
+
+                <h1 id="hero-title" class="text-6xl md:text-[8.5rem] leading-[0.85] mb-6">
+                    <span class="scramble-target block text-cream" id="scramble1">PRATICA</span>
+                    <span class="font-serif italic font-light text-teal text-6xl md:text-[7.5rem] block -mt-4" id="scramble2">mente.</span>
+                </h1>
+
+                <p id="hero-desc" class="text-cream/70 text-base md:text-lg max-w-lg mb-10 leading-relaxed mx-auto lg:mx-0">
+                    A psicologia que entende seu cérebro e acolhe sua história. Transforme sua saúde mental com ciência e empatia real.
+                </p>
+
+                <div id="hero-actions" class="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
+                    <a href="https://wa.me/11982921669" class="btn-magnetic magnetic">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        AGENDAR AGORA
+                    </a>
+                    <a href="#atuacao" class="group flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-cream/40 hover:text-cream transition-colors py-4">
+                        EXPLORAR ÁREAS
+                        <i data-lucide="chevron-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats/Cards Column -->
+            <div id="hero-cards" class="flex flex-col gap-4 w-full md:w-auto md:min-w-[280px] lg:mr-[4vw]">
+                <div class="stat-card">
+                    <div class="font-display text-4xl text-teal">ACT</div>
+                    <div class="text-[10px] uppercase tracking-widest text-cream/30 mt-1">Aceitação e Compromisso</div>
+                </div>
+                <div class="stat-card">
+                    <div class="font-display text-4xl text-teal">TCC</div>
+                    <div class="text-[10px] uppercase tracking-widest text-cream/30 mt-1">Cognitivo-Comportamental</div>
+                </div>
+                <div class="stat-card">
+                    <div class="font-display text-4xl text-teal">ONLINE</div>
+                    <div class="text-[10px] uppercase tracking-widest text-cream/30 mt-1">Atendimento de Onde Estiver</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portrait Image Mobile (Shows a bit differently) -->
+        <div class="lg:hidden absolute bottom-0 right-0 w-full h-[50vh] z-0 opacity-20 pointer-events-none overflow-hidden footer-image">
+             <img src="https://i.ibb.co/JjLqLryx/beta-hero-page.webp" alt="" class="h-full w-full object-cover object-top opacity-30">
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
+            <div class="w-6 h-10 border border-cream/20 rounded-full relative">
+                <div class="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-1.5 bg-teal rounded-full animate-bounce"></div>
+            </div>
+            <span class="text-[8px] uppercase tracking-[0.3em]">Scroll</span>
+        </div>
+    </header>
+
+    <!-- MARQUEE -->
+    <div class="border-y border-teal/10 bg-ink2 py-4 overflow-hidden relative z-20">
+        <div class="flex marquee-track gap-12 text-[10px] items-center text-teal/40 font-black uppercase tracking-[0.3em]">
+            <span>Redução de Ansiedade</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Foco & Produtividade</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Equilíbrio Emocional</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Autoconhecimento</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Neuropsicologia</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <!-- Loop -->
+            <span>Redução de Ansiedade</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Foco & Produtividade</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Equilíbrio Emocional</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Autoconhecimento</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+            <span>Neuropsicologia</span> <div class="w-1 h-1 rounded-full bg-teal/20"></div>
+        </div>
+    </div>
+
+    <!-- SOBRE -->
+    <section id="sobre" class="py-32 px-[8vw] bg-ink">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
+            <div class="lg:w-1/2 relative group">
+                <div class="relative bg-ink2 p-12 rounded-[2rem] border border-teal/10 shadow-3xl z-10 transition-transform duration-500 group-hover:-translate-y-2">
+                    <span class="font-serif italic text-8xl text-teal/10 absolute -top-4 -left-4">"</span>
+                    <p class="font-serif italic text-3xl text-cream leading-snug relative z-10 mb-8">
+                        A terapia é o investimento com o maior retorno que existe: sua paz de espírito e clareza mental.
+                    </p>
+                    <div class="h-[1px] w-12 bg-teal inline-block mb-1"></div>
+                    <p class="text-teal font-black text-[11px] uppercase tracking-[0.2em]">Roberta Bianchi Zanollo</p>
+                </div>
+                <div class="absolute -bottom-8 -right-8 w-full h-full bg-teal/5 rounded-[2.5rem] -z-1 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+            </div>
+            
+            <div class="lg:w-1/2">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-8 h-[1px] bg-teal"></div>
+                    <span class="text-teal text-[11px] uppercase tracking-[0.3em] font-bold">Por que eu?</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl mb-8 leading-tight">Ciência com<br><span class="italic font-light font-serif text-teal">humanidade.</span></h2>
+                <div class="space-y-6 text-cream/50 leading-relaxed text-lg">
+                    <p>Minha prática integra a <strong>Neuropsicologia</strong> com abordagens cognitivas modernas (ACT e TCC). Olhamos para como o seu cérebro funciona biologicamente enquanto trabalhamos seus padrões de comportamento.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                        <div class="flex items-start gap-4">
+                            <i data-lucide="zap" class="text-teal w-6 h-6 shrink-0"></i>
+                            <div>
+                                <h4 class="text-cream text-sm font-bold uppercase tracking-widest mb-1">Eficácia</h4>
+                                <p class="text-sm">Foco em resultados práticos e mensuráveis desde o início.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <i data-lucide="shield-check" class="text-teal w-6 h-6 shrink-0"></i>
+                            <div>
+                                <h4 class="text-cream text-sm font-bold uppercase tracking-widest mb-1">Segurança</h4>
+                                <p class="text-sm">Ambiente online 100% sigiloso e ético.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AREAS DE ATUACAO -->
+    <section id="atuacao" class="py-32 bg-ink2 border-y border-teal/5">
+        <div class="max-w-7xl mx-auto px-[8vw]">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl md:text-6xl mb-6">Expertise <span class="italic font-serif text-teal font-light">Clínica</span></h2>
+                <p class="text-cream/40 max-w-2xl mx-auto text-lg leading-relaxed">Suporte especializado para diferentes fases e desafios da vida moderna.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-2">
+                    <div class="mb-12">
+                        <i data-lucide="brain" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
+                    </div>
+                    <h3 class="text-2xl mb-6">Neuropsicologia</h3>
+                    <p class="text-cream/30 text-sm leading-relaxed">Avaliações cognitivas detalhadas para o diagnóstico preciso de TDAH, Autismo e declínios cognitivos.</p>
+                </div>
+
+                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-2">
+                    <div class="mb-12">
+                        <i data-lucide="users" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
+                    </div>
+                    <h3 class="text-2xl mb-6">Psicoterapia</h3>
+                    <p class="text-cream/30 text-sm leading-relaxed">Ansiedade, depressão e regulação emocional para adultos, adolescentes e terapia de casal.</p>
+                </div>
+
+                <div class="act-card group p-10 bg-ink border border-teal/5 rounded-3xl transition-all duration-500 hover:border-teal/30 hover:-translate-y-2">
+                    <div class="mb-12">
+                        <i data-lucide="baby" class="text-teal w-12 h-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"></i>
+                    </div>
+                    <h3 class="text-2xl mb-6">Perinatal</h3>
+                    <p class="text-cream/30 text-sm leading-relaxed">Acompanhamento especializado para gestantes e puérperas durante a jornada da maternidade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-32 px-[8vw] bg-ink">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-4xl text-center mb-16">Dúvida <span class="italic font-serif text-teal font-light">Frequentes</span></h2>
+            <div class="space-y-4">
+                <details class="group bg-ink2 border border-teal/5 rounded-2xl p-6 open:border-teal/20 transition-all">
+                    <summary class="list-none flex justify-between items-center cursor-pointer font-bold text-xs uppercase tracking-widest text-teal/60">
+                        Como funciona a primeira sessão?
+                        <i data-lucide="plus" class="w-4 h-4 transition-transform group-open:rotate-45"></i>
+                    </summary>
+                    <div class="pt-6 text-cream/40 text-sm leading-relaxed">
+                        A primeira sessão é um acolhimento inicial. Nela, conversamos sobre o que te trouxe à terapia, seus objetivos e como minha abordagem pode te ajudar. É o momento de criarmos conexão fundamental para o processo.
+                    </div>
+                </details>
+
+                <details class="group bg-ink2 border border-teal/5 rounded-2xl p-6 open:border-teal/20 transition-all">
+                    <summary class="list-none flex justify-between items-center cursor-pointer font-bold text-xs uppercase tracking-widest text-teal/60">
+                        Atende convênios médicos?
+                        <i data-lucide="plus" class="w-4 h-4 transition-transform group-open:rotate-45"></i>
+                    </summary>
+                    <div class="pt-6 text-cream/40 text-sm leading-relaxed">
+                        Atendo de forma particular, mas forneço toda a documentação necessária para que você solicite o <strong>reembolso</strong> junto ao seu plano de saúde.
+                    </div>
+                </details>
+
+                <details class="group bg-ink2 border border-teal/5 rounded-2xl p-6 open:border-teal/20 transition-all">
+                    <summary class="list-none flex justify-between items-center cursor-pointer font-bold text-xs uppercase tracking-widest text-teal/60">
+                        Quanto tempo dura o tratamento?
+                        <i data-lucide="plus" class="w-4 h-4 transition-transform group-open:rotate-45"></i>
+                    </summary>
+                    <div class="pt-6 text-cream/40 text-sm leading-relaxed">
+                        O tempo é subjetivo e depende das suas queixas. Trabalhamos com metas terapêuticas para que você perceba sua evolução de forma clara e objetiva ao longo das semanas.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER CTA -->
+    <section class="py-32 px-[8vw] bg-ink relative overflow-hidden">
+        <div class="bg-ink2 border border-teal/10 rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,229,212,0.05)_0%,transparent_70%)] opacity-50"></div>
+            <h2 class="text-4xl md:text-7xl mb-8 leading-tight relative z-10">O momento de cuidar de<br>você é <span class="italic font-serif text-teal font-light">agora.</span></h2>
+            <p class="text-cream/40 text-xl max-w-xl mx-auto mb-12 relative z-10">Não espere atingir o seu limite para pedir ajuda. Sua saúde mental é sua base.</p>
+            <a href="https://wa.me/11982921669" class="btn-magnetic magnetic mx-auto w-fit">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+                Iniciar Minha Jornada
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-12 bg-ink border-t border-teal/5 px-[8vw] text-cream/20 text-[9px] uppercase tracking-[0.3em] font-black">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-4">
+                <span class="text-teal">Beta Bianchi</span>
+                <span class="w-[1px] h-3 bg-teal/20"></span>
+                <span>Roberta Bianchi Cortez Zanollo · CRP 06/175.465</span>
+            </div>
+            <div class="flex gap-8 items-center">
+                <a href="https://instagram.com/beta_bianchi.neuropsi" class="hover:text-teal transition-colors">Instagram</a>
+                <a href="#" class="hover:text-teal transition-colors">Portfólio Visual</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
+        let mx = 0, my = 0, cx = 0, cy = 0;
+
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+        function animateCursor() {
+            cx += (mx - cx) * 0.12;
+            cy += (my - cy) * 0.12;
+            cursor.style.left = cx + 'px';
+            cursor.style.top = cy + 'px';
+            cursorDot.style.left = mx + 'px';
+            cursorDot.style.top = my + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Magnetic Logic
+        document.querySelectorAll('.magnetic').forEach(el => {
+            el.addEventListener('mousemove', e => {
+                const r = el.getBoundingClientRect();
+                const x = e.clientX - r.left - r.width / 2;
+                const y = e.clientY - r.top - r.height / 2;
+                el.style.transform = `translate(${x * 0.28}px, ${y * 0.28}px)`;
+            });
+            el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+        });
+
+        // Neural Canvas Script
+        (function() {
+            const canvas = document.getElementById('neural-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [], mouse = { x: null, y: null };
+            const N = 80, DIST = 150, TEAL = '0,229,212';
+
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+
+            function mkParticle() {
+                return {
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    r: Math.random() * 1.5 + 0.5,
+                    op: Math.random() * 0.4 + 0.1,
+                    pulse: Math.random() * Math.PI * 2
+                };
+            }
+
+            function init() {
+                resize();
+                particles = Array.from({ length: N }, mkParticle);
+            }
+
+            document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+            window.addEventListener('resize', init);
+
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                const t = Date.now() * 0.001;
+
+                particles.forEach(p => {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+                    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+
+                    if (mouse.x !== null) {
+                        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+                        const d = Math.hypot(dx, dy);
+                        if (d < 120) {
+                            const f = (120 - d) / 120;
+                            p.x += dx * f * 0.04;
+                            p.y += dy * f * 0.04;
+                        }
+                    }
+
+                    const op = p.op + Math.sin(t * 0.8 + p.pulse) * 0.1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${TEAL},${Math.max(0, op)})`;
+                    ctx.fill();
+                });
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const d = Math.hypot(dx, dy);
+                        if (d < DIST) {
+                            const a = (1 - d / DIST) * 0.22;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(${TEAL},${a})`;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            init(); draw();
+        })();
+
+        // Text Scramble Logic
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>—_\\/[]{}=+*^?#ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                this.update = this.update.bind(this);
+            }
+            setText(txt) {
+                const len = Math.max(this.el.innerText.length, txt.length);
+                this.queue = [];
+                for (let i = 0; i < len; i++) {
+                    this.queue.push({
+                        from: this.el.innerText[i] || '',
+                        to: txt[i] || '',
+                        start: Math.floor(Math.random() * 15),
+                        end: Math.floor(Math.random() * 15) + 15,
+                        char: ''
+                    });
+                }
+                this.frame = 0;
+                this.update();
+            }
+            update() {
+                let out = '', done = 0;
+                for (const q of this.queue) {
+                    if (this.frame >= q.end) { done++; out += q.to; }
+                    else if (this.frame >= q.start) {
+                        if (!q.char || Math.random() < 0.28) q.char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                        out += `<span class="dud">${q.char}</span>`;
+                    } else { out += q.from; }
+                }
+                this.el.innerHTML = out;
+                if (done < this.queue.length) { this.raf = requestAnimationFrame(this.update); this.frame++; }
+            }
+        }
+
+        // Initial Entrance Animations
+        gsap.set(["#hero-image", "#hero-eyebrow", "#hero-title", "#hero-desc", "#hero-actions", "#hero-cards"], { opacity: 0 });
+
+        window.addEventListener('load', () => {
+            const s1 = new TextScramble(document.getElementById('scramble1'));
+            const s2 = new TextScramble(document.getElementById('scramble2'));
+            
+            // Hero Image Slide In
+            gsap.to("#hero-image", { 
+                opacity: 1, 
+                x: "-15%", 
+                duration: 1.5, 
+                delay: 0.3,
+                ease: "power3.out",
+                startAt: { x: "-25%" }
+            });
+
+            // Content Animations
+            gsap.to("#hero-eyebrow", { opacity: 1, y: 0, duration: 1, delay: 0.5, startAt: { y: 20 } });
+            
+            setTimeout(() => s1.setText('PRATICA'), 800);
+            setTimeout(() => s2.setText('mente.'), 1200);
+            gsap.to(["#scramble1", "#scramble2"], { opacity: 1, duration: 0.5, delay: 0.8 });
+
+            gsap.to("#hero-desc", { opacity: 1, y: 0, duration: 1, delay: 1.4, startAt: { y: 20 } });
+            gsap.to("#hero-actions", { opacity: 1, y: 0, duration: 1, delay: 1.6, startAt: { y: 20 } });
+            
+            // Cards stagger
+            gsap.to("#hero-cards .stat-card", { 
+                opacity: 1, 
+                x: 0, 
+                duration: 1, 
+                stagger: 0.2, 
+                delay: 1.8,
+                startAt: { x: 30, opacity: 0 } 
+            });
+        });
+
+        // Simple Intersection Logic
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('opacity-100', 'translate-y-0');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.act-card, .stat-card').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
